@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+<title>Sistema de Transcrição</title>
 <link href="main.css" rel="stylesheet" type="text/css" />
 </head>
 <?php 
@@ -23,19 +23,22 @@
 Usuário: <input type="text" name="email"><br>
 Senha: <input type="password" name="pwd"><br>
 <input type="submit" value="Entrar">
+
 </form>
 <button id="regbuttom">Registrar</button>
 </div>
 <div id="registrar">
 <h1>Sistema de Transcrição</h1>
 <h2>Registrar Novo Usuário</h2>
-<form>
+
+<form action="test.php" method="post">
 Nome:<tr> <input type="text" name="nome"><br>
 e-mail: <input type="text" name="email"><br>
 Senha: <input type="password" name="pwd"><br>
 Confimação: <input type="password" name="pwdr"><br>
 <input type="submit" value="Registrar">
 </form>
+
 </div>
 <div id="transcrever">
 <h1>Sistema de Transcrição</h1>
