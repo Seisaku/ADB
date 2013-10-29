@@ -1,0 +1,118 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`audio`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`audio` (
+  `idaudio` INT NOT NULL AUTO_INCREMENT,
+  `arquivo` VARCHAR(45) NULL,
+  `nome` VARCHAR(45) NULL,
+  `data` VARCHAR(45) NULL,
+  PRIMARY KEY (`idaudio`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`transcricao`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`transcricao` (
+  `idtranscricao` INT NOT NULL AUTO_INCREMENT,
+  `status_concluido` VARCHAR(45) NULL,
+  `audio_idaudio` INT NOT NULL,
+  PRIMARY KEY (`idtranscricao`),
+  INDEX `fk_transcricao_audio1_idx` (`audio_idaudio` ASC),
+  CONSTRAINT `fk_transcricao_audio1`
+    FOREIGN KEY (`audio_idaudio`)
+    REFERENCES `mydb`.`audio` (`idaudio`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`usuario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`usuario` (
+  `idusuario` INT NOT NULL AUTO_INCREMENT,
+  `transcricao_idtranscricao` INT NOT NULL,
+  `nome` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NULL,
+  `senha` VARCHAR(45) NULL,
+  PRIMARY KEY (`idusuario`),
+  INDEX `fk_usuario_transcricao1_idx` (`transcricao_idtranscricao` ASC),
+  CONSTRAINT `fk_usuario_transcricao1`
+    FOREIGN KEY (`transcricao_idtranscricao`)
+    REFERENCES `mydb`.`transcricao` (`idtranscricao`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`tema`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`tema` (
+  `idtema` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL,
+  PRIMARY KEY (`idtema`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`subtema`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`subtema` (
+  `idsubtema` INT NOT NULL AUTO_INCREMENT,
+  `tema_idtema` INT NOT NULL,
+  `nome` VARCHAR(45) NULL,
+  PRIMARY KEY (`idsubtema`),
+  INDEX `fk_subtema_tema1_idx` (`tema_idtema` ASC),
+  CONSTRAINT `fk_subtema_tema1`
+    FOREIGN KEY (`tema_idtema`)
+    REFERENCES `mydb`.`tema` (`idtema`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`texto`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`texto` (
+  `idtexto` INT NOT NULL AUTO_INCREMENT,
+  `arquivo` VARCHAR(45) NULL,
+  `subtema_idsubtema` INT NOT NULL,
+  `transcricao_idtranscricao` INT NOT NULL,
+  `status_revisao` VARCHAR(45) NULL,
+  `texto_revisado` INT NOT NULL,
+  `data` VARCHAR(45) NULL,
+  PRIMARY KEY (`idtexto`),
+  INDEX `fk_texto_subtema1_idx` (`subtema_idsubtema` ASC),
+  INDEX `fk_texto_transcricao1_idx` (`transcricao_idtranscricao` ASC),
+  INDEX `fk_texto_texto1_idx` (`texto_revisado` ASC),
+  CONSTRAINT `fk_texto_subtema1`
+    FOREIGN KEY (`subtema_idsubtema`)
+    REFERENCES `mydb`.`subtema` (`idsubtema`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_texto_transcricao1`
+    FOREIGN KEY (`transcricao_idtranscricao`)
+    REFERENCES `mydb`.`transcricao` (`idtranscricao`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_texto_texto1`
+    FOREIGN KEY (`texto_revisado`)
+    REFERENCES `mydb`.`texto` (`idtexto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

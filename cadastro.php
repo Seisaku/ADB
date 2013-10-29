@@ -5,9 +5,7 @@
 <title>Cadastro</title>
 <link href="main.css" rel="stylesheet" type="text/css" />
 </head>
-<?php 
 
-?>
 <body>
 <nav>
 <a href="login.php">Login</a>
@@ -34,22 +32,21 @@ if($_POST["pwd"]!=$_POST["pwdr"]){
 	echo "não verificados";
 }else{
 	echo $_POST["nome"];
-	echo $_POST["email"];
+	$email = $_POST["email"];
+	if (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/",$email))
+  	{
+  		echo "Invalid email format<br>"; 
+  	}else{
+		echo "mail ok<br>";
+  	}
+	
+	
 	echo $hashed_password = crypt($_POST["pwd"]); // let the salt be automatically generated
+	if (crypt($_POST["pwdr"], $hashed_password) == $hashed_password) {
+	   echo "<br>Password verified!";
+	}
 	
-if (crypt($_POST["pwdr"], $hashed_password) == $hashed_password) {
-   echo "Password verified!";
 }
-	
-}
-
-/* You should pass the entire results of crypt() as the salt for comparing a
-   password, to avoid problems when different hashing algorithms are used. (As
-   it says above, standard DES-based password hashing uses a 2-character salt,
-   but MD5-based hashing uses 12.) */
-//if (crypt($user_input, $hashed_password) == $hashed_password) {
-//   echo "Password verified!";
-//}
 
 
 ?>
