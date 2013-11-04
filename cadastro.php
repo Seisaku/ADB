@@ -27,8 +27,14 @@ Confimação: <input type="password" name="pwdr"><br>
 </form>
 
 <?php
-
-if($_POST["pwd"]!=$_POST["pwdr"]){
+$pwd = "";
+$error = "";
+$nome = "";
+$email = "";
+if( strlen($pwd) < 8 ) {
+	$error .= "Password too short!";
+	echo "Senha curta";
+}elseif($_POST["pwd"]!=$_POST["pwdr"]){
 	echo "não verificados";
 }else{
 	echo $_POST["nome"];
@@ -48,7 +54,16 @@ if($_POST["pwd"]!=$_POST["pwdr"]){
 	
 }
 
+mysqli_connect("localhost","adb","298476","mydb");
 
+if (mysqli_connect_errno())
+  {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  }
+  
+ $sql="INSERT INTO Usuarios (nome, email, senha)
+VALUES
+('$_POST[nome]','$_POST[email]','$_POST[senha]')";
 ?>
 
 
