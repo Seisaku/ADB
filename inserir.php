@@ -28,7 +28,6 @@ VALUES('$_POST[nome]','$_POST[email]','$hashed_password')";
 	}
 	echo "Usuario " . $_POST["nome"] . " registrado com sucesso<br>";
 	mysqli_close($con);
-	//if (crypt($_POST["pwdr"], $hashed_password) == $hashed_password)
 }
 ?>
 
